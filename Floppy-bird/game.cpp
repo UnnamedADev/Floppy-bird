@@ -23,8 +23,15 @@ int main() {
 	//Player ball
 	int playerWidth, playerHeight;
 	playerWidth = playerHeight = 30;
+
+	int playerX, playerY;
+	playerX = 100;
+	playerY = 200;
+
+	float gravity = 8;
+
 	sf::CircleShape myPlayer(playerWidth, playerHeight);
-	myPlayer.setPosition(sf::Vector2f(100, windowY/2-playerHeight));
+	myPlayer.setPosition(sf::Vector2f(playerX, playerY));
 	sf::Color playerColor(200, 0, 0);
 	myPlayer.setFillColor(playerColor);
 	
@@ -49,11 +56,24 @@ int main() {
 					break;
 				case 74:
 					break;
+				case 57:
+					gravity = -15;
+					break;
 				}
 			}
 				
 		}
-				
+		//Calculate positions, stats etc.
+		if (gravity < 8) {
+			gravity += 0.8;
+		}
+		if (gravity >= 8) {
+			gravity += 0.2;
+		}
+		playerY += gravity;
+		myPlayer.setPosition(sf::Vector2f(playerX, playerY));
+
+		//Draw elements
 		myWindow.draw(myBackground);
 		myWindow.draw(myPlayer);
 
