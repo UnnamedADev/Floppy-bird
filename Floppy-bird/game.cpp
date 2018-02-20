@@ -21,8 +21,10 @@ int main() {
 	myBackground.setFillColor(backgroundColor);
 
 	//Player ball
-	sf::CircleShape myPlayer(100);
-	myPlayer.setPosition(sf::Vector2f(100, 100));
+	int playerWidth, playerHeight;
+	playerWidth = playerHeight = 30;
+	sf::CircleShape myPlayer(playerWidth, playerHeight);
+	myPlayer.setPosition(sf::Vector2f(100, windowY/2-playerHeight));
 	sf::Color playerColor(200, 0, 0);
 	myPlayer.setFillColor(playerColor);
 	
@@ -37,10 +39,21 @@ int main() {
 			if (myEvent.type == sf::Event::Closed) {
 				myWindow.close();
 			}
+			if (myEvent.type == sf::Event::KeyPressed) {
+				switch (myEvent.key.code) {
+				case 71:
+					break;
+				case 72:
+					break;
+				case 73:
+					break;
+				case 74:
+					break;
+				}
+			}
 				
 		}
-
-		
+				
 		myWindow.draw(myBackground);
 		myWindow.draw(myPlayer);
 
