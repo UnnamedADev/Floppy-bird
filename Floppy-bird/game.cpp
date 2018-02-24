@@ -26,7 +26,7 @@ int main() {
 
 	//Object vector
 	std::vector <eObject> vObject;
-	vObject.push_back(eObject(800,0));
+	vObject.push_back(eObject());
 
 	//Player ball
 	playerObject * player = new playerObject;
@@ -83,26 +83,31 @@ int main() {
 		
 		myWindow.draw(myBackground);
 
+		sf::Color columnColor(0, 200, 0);
 		for (int i = 0; i < vObject.size(); i++) {
-			
 
 			vObject[i].x += vObject[i].xv;
 
-			sf::RectangleShape column(sf::Vector2f(vObject[0].width, vObject[0].height));
-			sf::Color columnColor(0, 200, 0);
-			column.setFillColor(columnColor);
-			column.setPosition(sf::Vector2f(vObject[0].x, vObject[0].y));
+			sf::RectangleShape upColumn(sf::Vector2f(vObject[i].width, vObject[i].height));
+			upColumn.setFillColor(columnColor);
+			upColumn.setPosition(sf::Vector2f(vObject[i].x, vObject[i].y1));
 
-			myWindow.draw(column);
-			if (vObject[i].x < 0) {
+			sf::RectangleShape downColumn(sf::Vector2f(vObject[i].width, vObject[i].height));
+			downColumn.setFillColor(columnColor);
+			downColumn.setPosition(sf::Vector2f(vObject[i].x, vObject[i].y2));
+
+			myWindow.draw(upColumn);
+			myWindow.draw(downColumn);
+
+			if (vObject[i].x < 0- vObject[i].width) {
 				std::cout << vObject.size();
 				vObject.erase(vObject.begin());
 				std::cout << vObject.size();
-				vObject.push_back(eObject(800,0));
+			}
+			if (vObject[vObject.size()-1].x < 600) {
+				vObject.push_back(eObject());
 			}
 		}
-		
-
 		
 		myWindow.draw(myPlayer);
 		

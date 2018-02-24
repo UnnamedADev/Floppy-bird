@@ -11,18 +11,15 @@ private:
 class eObject
 {
 public:
-	double x;
-	double y;
+	int width = 50;
+	int height = 100;
+
+	double x = 800;
+	double y1 = 0;
+	double y2 = 600 - height;
 
 	double xv = -3;
 	double yv = 0;
 
-	int width = 50;
-	int height = 100;
-	eObject();
-	eObject(double f_x, double f_y)
-		:x(f_x)
-		,y(f_y)
-	{}
 private:
 };
