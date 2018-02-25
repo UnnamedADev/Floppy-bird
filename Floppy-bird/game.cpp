@@ -3,10 +3,14 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <stdlib.h>
 
 #include "object.h"
 
 int main() {
+	//SRAND
+	srand(time(NULL));
+
 	//Window informations
 	int windowX = 800;
 	int windowY = 600;
@@ -26,15 +30,16 @@ int main() {
 
 	//Object vector
 	std::vector <eObject> vObject;
-	vObject.push_back(eObject());
-
+	vObject.push_back(eObject(rand() % 100 + 31, rand() % 100 + 31));
+	
 	//Player ball
 	playerObject * player = new playerObject;
 
-	sf::CircleShape myPlayer(player->width, player->height);
+	sf::CircleShape myPlayer(player->width);
 	myPlayer.setPosition(sf::Vector2f(player->x, player->y));
 	sf::Color playerColor(200, 0, 0);
 	myPlayer.setFillColor(playerColor);
+
 
 	double gravity = 8;
 	
@@ -80,32 +85,29 @@ int main() {
 		myPlayer.setPosition(sf::Vector2f(player->x, player->y));
 
 		//Draw elements
-		
 		myWindow.draw(myBackground);
 
 		sf::Color columnColor(0, 200, 0);
 		for (int i = 0; i < vObject.size(); i++) {
 
 			vObject[i].x += vObject[i].xv;
-
-			sf::RectangleShape upColumn(sf::Vector2f(vObject[i].width, vObject[i].height));
+			
+			sf::RectangleShape upColumn(sf::Vector2f(vObject[i].width, vObject[i].upheight));
 			upColumn.setFillColor(columnColor);
 			upColumn.setPosition(sf::Vector2f(vObject[i].x, vObject[i].y1));
 
-			sf::RectangleShape downColumn(sf::Vector2f(vObject[i].width, vObject[i].height));
+			sf::RectangleShape downColumn(sf::Vector2f(vObject[i].width, vObject[i].downheight));
 			downColumn.setFillColor(columnColor);
-			downColumn.setPosition(sf::Vector2f(vObject[i].x, vObject[i].y2));
+			downColumn.setPosition(sf::Vector2f(vObject[i].x, vObject[i].y2-vObject[i].downheight));
 
 			myWindow.draw(upColumn);
 			myWindow.draw(downColumn);
 
-			if (vObject[i].x < 0- vObject[i].width) {
-				std::cout << vObject.size();
+			if (vObject[i].x < 0 - vObject[i].width) {
 				vObject.erase(vObject.begin());
-				std::cout << vObject.size();
 			}
 			if (vObject[vObject.size()-1].x < 600) {
-				vObject.push_back(eObject());
+				vObject.push_back(eObject(rand() % 100 + 31, rand() % 100 + 31));
 			}
 		}
 		
