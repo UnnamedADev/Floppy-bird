@@ -3,7 +3,7 @@ class playerObject
 public:
 	double x = 200;
 	double y = 200;
-	int width = 30;
+	int width = 15;
 	int height = 30;
 	int score = 0;
 

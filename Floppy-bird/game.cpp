@@ -23,10 +23,13 @@ int main() {
 	myWindow.setFramerateLimit(60);
 
 	//Background
-	sf::RectangleShape myBackground(sf::Vector2f(windowX, windowY));
-	myBackground.setPosition(sf::Vector2f(0, 0));
-	sf::Color backgroundColor(60, 60, 60);
-	myBackground.setFillColor(backgroundColor);
+	sf::Texture bcktexture;
+	bcktexture.loadFromFile("background.png");
+	sf::Sprite myBackground;
+	myBackground.setTexture(bcktexture);
+	myBackground.setPosition(0, 0);
+	myBackground.setScale(1, 1);
+
 
 	//Object vector
 	std::vector <eObject> vObject;
@@ -35,10 +38,23 @@ int main() {
 	//Player ball
 	playerObject * player = new playerObject;
 
-	sf::CircleShape myPlayer(player->width);
-	myPlayer.setPosition(sf::Vector2f(player->x, player->y));
-	sf::Color playerColor(244, 170, 66);
-	myPlayer.setFillColor(playerColor);
+	sf::Texture birdtexture;
+	birdtexture.loadFromFile("bird.png");
+
+	sf::Sprite myPlayer;
+	myPlayer.setTexture(birdtexture);
+	myPlayer.setPosition(200, 200);
+	myPlayer.setScale(1,1);
+
+	//Column
+	sf::Texture mctexture;
+	mctexture.loadFromFile("pipe.png");
+	mctexture.setRepeated(true);
+
+	sf::Sprite myCol;
+	myCol.setTexture(mctexture);
+	myCol.setScale(1, 1);
+
 
 	double gravity = 8;
 	
@@ -81,7 +97,7 @@ int main() {
 			player->y = 0;
 			gravity = std::abs(gravity);
 		}
-		myPlayer.setPosition(sf::Vector2f(player->x, player->y));
+		myPlayer.setPosition(player->x, player->y);
 
 		for (int i = 0; i < vObject.size(); i++) {
 			if (player->x >= vObject[i].x && player->x <= vObject[i].x + vObject[i].width) {
@@ -103,16 +119,13 @@ int main() {
 
 			vObject[i].x += vObject[i].xv;
 			
-			sf::RectangleShape upColumn(sf::Vector2f(vObject[i].width, vObject[i].upheight));
-			upColumn.setFillColor(columnColor);
-			upColumn.setPosition(sf::Vector2f(vObject[i].x, vObject[i].y1));
+			myCol.setTextureRect(sf::IntRect(0,0,vObject[i].width,vObject[i].upheight));
+			myCol.setPosition(vObject[i].x, vObject[i].y1);
+			myWindow.draw(myCol);
 
-			sf::RectangleShape downColumn(sf::Vector2f(vObject[i].width, vObject[i].downheight));
-			downColumn.setFillColor(columnColor);
-			downColumn.setPosition(sf::Vector2f(vObject[i].x, vObject[i].y2-vObject[i].downheight));
-
-			myWindow.draw(upColumn);
-			myWindow.draw(downColumn);
+			myCol.setTextureRect(sf::IntRect(0, 0, vObject[i].width, vObject[i].downheight));
+			myCol.setPosition(vObject[i].x, vObject[i].y2-vObject[i].downheight);
+			myWindow.draw(myCol);
 
 			if (vObject[i].x < 0 - vObject[i].width-200) {
 				vObject.erase(vObject.begin());
@@ -125,7 +138,6 @@ int main() {
 		}
 
 		myWindow.draw(myPlayer);
-
 		//Display window
 		myWindow.display();
 	}
