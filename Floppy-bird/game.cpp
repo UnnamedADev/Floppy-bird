@@ -1,9 +1,11 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+
 #include <iostream>
 #include <cmath>
 #include <vector>
 #include <stdlib.h>
+#include <string>
 
 #include "object.h"
 
@@ -55,6 +57,27 @@ int main() {
 	myCol.setTexture(mctexture);
 	myCol.setScale(1, 1);
 
+	//Music
+	sf::Music myMusic;
+	if (!myMusic.openFromFile("music.ogg")) {
+		std::cout << "music error" << std::endl;
+	}
+	myMusic.setPosition(0, 0,0);
+	myMusic.setVolume(50);
+	myMusic.setLoop(true);
+	myMusic.play();
+
+	//Text
+	sf::Font myFont;
+	myFont.loadFromFile("arial.ttf");
+
+	sf::Text myText;
+	myText.setFont(myFont);
+	myText.setCharacterSize(24);
+	myText.setPosition(15, 15);
+
+	std::string msg = std::to_string(player->score);
+	myText.setString("Score: "+msg);
 
 	double gravity = 8;
 	
@@ -100,7 +123,8 @@ int main() {
 		myPlayer.setPosition(player->x, player->y);
 
 		for (int i = 0; i < vObject.size(); i++) {
-			if (player->x >= vObject[i].x && player->x <= vObject[i].x + vObject[i].width) {
+			if (player->x >= vObject[i].x && player->x <= vObject[i].x + vObject[i].width || player->x + player->width >= vObject[i].x && player->x + player->width <= vObject[i].x + vObject[i].width) {
+
 				if (player->y <= vObject[i].y1 + vObject[i].upheight) {
 					myWindow.close();
 				}
@@ -127,10 +151,13 @@ int main() {
 			myCol.setPosition(vObject[i].x, vObject[i].y2-vObject[i].downheight);
 			myWindow.draw(myCol);
 
+			if (vObject[i].x == player->x) {
+				player->score++;
+				std::string msg = std::to_string(player->score);
+				myText.setString("Score: " + msg);
+			}
 			if (vObject[i].x < 0 - vObject[i].width-200) {
 				vObject.erase(vObject.begin());
-				player->score++;
-				std::cout << player->score << std::endl;
 			}
 			if (vObject[vObject.size()-1].x < 600) {
 				vObject.push_back(eObject(rand() % 100 + 31, rand() % 100 + 31));
@@ -138,6 +165,7 @@ int main() {
 		}
 
 		myWindow.draw(myPlayer);
+		myWindow.draw(myText);
 		//Display window
 		myWindow.display();
 	}

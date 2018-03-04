@@ -24,7 +24,7 @@ public:
 
 	double xv = -3;
 	double yv = 0;
-	
+
 	eObject(int f_upheight = 0, int f_downheight = 0) {
 		this->upheight += f_upheight;
 		this->downheight += f_downheight;
