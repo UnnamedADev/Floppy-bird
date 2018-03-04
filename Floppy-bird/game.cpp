@@ -25,7 +25,7 @@ int main() {
 	//Background
 	sf::RectangleShape myBackground(sf::Vector2f(windowX, windowY));
 	myBackground.setPosition(sf::Vector2f(0, 0));
-	sf::Color backgroundColor(255, 255, 255);
+	sf::Color backgroundColor(60, 60, 60);
 	myBackground.setFillColor(backgroundColor);
 
 	//Object vector
@@ -37,9 +37,8 @@ int main() {
 
 	sf::CircleShape myPlayer(player->width);
 	myPlayer.setPosition(sf::Vector2f(player->x, player->y));
-	sf::Color playerColor(200, 0, 0);
+	sf::Color playerColor(244, 170, 66);
 	myPlayer.setFillColor(playerColor);
-
 
 	double gravity = 8;
 	
@@ -84,6 +83,18 @@ int main() {
 		}
 		myPlayer.setPosition(sf::Vector2f(player->x, player->y));
 
+		for (int i = 0; i < vObject.size(); i++) {
+			if (player->x >= vObject[i].x && player->x <= vObject[i].x + vObject[i].width) {
+				if (player->y <= vObject[i].y1 + vObject[i].upheight) {
+					myWindow.close();
+				}
+				if (player->y + player->height >= vObject[i].y2 - vObject[i].downheight) {
+					myWindow.close();
+				}
+			}
+
+		}
+
 		//Draw elements
 		myWindow.draw(myBackground);
 
@@ -103,16 +114,18 @@ int main() {
 			myWindow.draw(upColumn);
 			myWindow.draw(downColumn);
 
-			if (vObject[i].x < 0 - vObject[i].width) {
+			if (vObject[i].x < 0 - vObject[i].width-200) {
 				vObject.erase(vObject.begin());
+				player->score++;
+				std::cout << player->score << std::endl;
 			}
 			if (vObject[vObject.size()-1].x < 600) {
 				vObject.push_back(eObject(rand() % 100 + 31, rand() % 100 + 31));
 			}
 		}
-		
+
 		myWindow.draw(myPlayer);
-		
+
 		//Display window
 		myWindow.display();
 	}

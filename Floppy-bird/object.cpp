@@ -6,3 +6,7 @@
 #include <stdlib.h>
 
 #include "object.h"
+
+void playerObject::restart() {
+	std::cout << "xd";
+}

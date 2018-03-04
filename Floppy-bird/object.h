@@ -5,6 +5,9 @@ public:
 	double y = 200;
 	int width = 30;
 	int height = 30;
+	int score = 0;
+
+	void restart();
 private:
 };
 
